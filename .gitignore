@@ -1,5 +1,6 @@
 /node_modules
-/dist
+src/node_modules
+dist
 /config.json
 /src/config.json
 .tag*
