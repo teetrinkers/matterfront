@@ -18,9 +18,9 @@ var notifyOSX = function(doNotify){
   if (bounceId) {
     app.dock.cancelBounce(bounceId);
   }
-  if (doNotify) {
-    bounceId = app.dock.bounce('critical');
-  }
+  // if (doNotify) {
+  //   bounceId = app.dock.bounce();
+  // }
 };
 
 var notifyWindows = function(doNotify){
