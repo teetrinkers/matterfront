@@ -24,8 +24,8 @@ var notifyOSX = function(doNotify){
 };
 
 var notifyWindows = function(doNotify){
-  var mainWindow = remote.getCurrentWindow();
-  mainWindow.flashFrame(doNotify)
+  // var mainWindow = remote.getCurrentWindow();
+  // mainWindow.flashFrame(doNotify)
 };
 
 module.exports = osNotify;

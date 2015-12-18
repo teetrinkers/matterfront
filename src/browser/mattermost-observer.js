@@ -22,3 +22,21 @@ document.addEventListener("DOMContentLoaded", function() {
     notifyHost();
   }, 1000);
 });
+
+// Show balloon when notified.
+function overrideNotificationSystem() {
+  Notification = function(title, options) {
+    ipc.send('notified', {
+      title: title,
+      options: options
+    });
+  };
+  Notification.requestPermission = function(callback) {
+    callback('granted');
+  };
+  Notification.prototype.close = function() {};
+};
+
+if (process.platform === 'win32') {
+  overrideNotificationSystem();
+}
