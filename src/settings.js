@@ -21,12 +21,16 @@ var getConfigPath = function(homedir){
 };
 
 var defaults = {
+  teams: [{
+    name: "subshell",
+    url: "http://chat.subshell.com/subshell"
+  }],
   window: {
     width: 1024,
     height: 600
   },
   "chrome-args": {},
-  "showTrayIcon": false
+  "showTrayIcon": true
 };
 
 settings.load = function(homedir){
