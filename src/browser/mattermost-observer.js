@@ -5,7 +5,10 @@ var notifyHost = function() {
   var unreadCount = $('.unread-title').length;
 
   ipc.sendToHost('mention-count', mentionCount);
+  ipc.send('mention-count', mentionCount);
+  
   ipc.sendToHost('unread-count', unreadCount);
+  ipc.send('unread-count', unreadCount);
 };
 
 var getTotalMentionCount = function(){
