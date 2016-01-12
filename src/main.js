@@ -1,12 +1,9 @@
-const electron = require('electron');
-const Tray = electron.Tray;
-const ipc = electron.ipcMain;
-
 var app = require('app');
 var BrowserWindow = require('browser-window');
 var menu = require('./menu.js');
 var path = require('path');
 var settings = require('./settings.js');
+var systray = require('./systray.js');
 
 settings.load();
 
@@ -92,28 +89,7 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  // set up tray icon to show balloon
-  if (process.platform === 'win32') {
-    trayIconPath = path.join(__dirname, '../resources/tray.png')
-    console.log("trayIconPath: " + trayIconPath);
-    trayIcon = new Tray(trayIconPath);
-    trayIcon.setToolTip(app.getName());
-    var tray_menu = require('./tray-menu.js').createDefault();
-    trayIcon.setContextMenu(tray_menu);
-    trayIcon.on('click', function() {
-      mainWindow.show();
-    });
-    trayIcon.on('balloon-click', function() {
-      mainWindow.show();
-    });
-    ipc.on('notified', function(event, arg) {
-      trayIcon.displayBalloon({
-        icon: path.join(__dirname, '../resources/mattermost.png'),
-        title: arg.title,
-        content: arg.options.body
-      });
-    });
-  }
+  systray.init(mainWindow);
 
   menu.load(mainWindow);
 });
