@@ -10,8 +10,10 @@ var tray;
 
 var defaultIcon = path.join(__dirname, '../resources/tray.png')
 var unreadMessagesIcon = path.join(__dirname, '../resources/tray-unread.png');
+var mentionsIcon = path.join(__dirname, '../resources/tray-mention.png');
 
-var hasUnreadMessages = false;
+var unreadCount = 0;
+var mentionsCount = 0;
 
 var createMenu = function() {
   var menu = new Menu();
@@ -24,21 +26,33 @@ var createMenu = function() {
   return menu;
 }
 
-function handleUnreadChange(event, arg) {
-  var count = arg;
-  if (count > 0 && !hasUnreadMessages) {
-    hasUnreadMessages = true;
+function updateIcon() {
+  if (mentionsCount > 0) {
+    tray.setImage(mentionsIcon);
+  } else if (unreadCount > 0) {
     tray.setImage(unreadMessagesIcon);
-  } else if (!count && hasUnreadMessages) {
-    hasUnreadMessages = false;
+  } else {
     tray.setImage(defaultIcon);
   }
 }
 
-var init = function(mainBrowserWindow) {
-  if (process.platform !== 'win32') {
-    return;
+function handleUnreadChange(event, arg) {
+  var previousCount = unreadCount;
+  unreadCount = arg;
+  if (previousCount != unreadCount) {
+    updateIcon();
   }
+}
+
+function handleMentionsChange(event, arg) {
+  var previousCount = mentionsCount;
+  mentionsCount = arg;
+  if (previousCount != mentionsCount) {
+    updateIcon();
+  }
+}
+
+var init = function(mainBrowserWindow) {
 
   tray = new Tray(defaultIcon);
   tray.setToolTip(app.getName());
@@ -61,7 +75,7 @@ var init = function(mainBrowserWindow) {
     });
   });
 
-  ipc.on('mention-count', handleUnreadChange);
+  ipc.on('mention-count', handleMentionsChange);
   ipc.on('unread-count', handleUnreadChange);
 }
 
