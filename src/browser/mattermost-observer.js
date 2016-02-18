@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // observe the DOM for mutations, specifically the .ps-container
   // which contains all the sidebar channels
   var MutationObserver = window.MutationObserver;
-  var list = document.querySelector('.sidebar--left');
+  var list = document.querySelector('body');
 
   var observer = new MutationObserver(function(mutations) {
     if (mutations.length) {
@@ -30,7 +30,7 @@ var notifyHost = function() {
 
   ipc.sendToHost('mention', mentionCount);
   ipc.send('mention', mentionCount);
-   
+
   ipc.sendToHost('unread', unreadCount);
   ipc.send('unread', unreadCount);
 };
